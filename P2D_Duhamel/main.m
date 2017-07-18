@@ -119,7 +119,30 @@ while 1 %vcut
 %         cur(k) = -21.5*2.5;
     end
     x(end-1,k) = cur(k);
-    
+
+    Rf = P.Rf_neg;
+        csmax = P.csmax_neg;
+        rka = P.rka_neg;
+        Rp = P.Rp_neg;
+        RTF2 = 2*P.R*P.T/P.F;
+        coef = 80*0;
+        if(P.T > P.Tam)
+            coef = 1;
+        end
+        eta = overpot(x,P,[T T(end)],k); eta = eta(1:P.bnd_sep_neg,k);
+        cl = x(P.idx_cl:P.nx:P.nx*P.nj, k);
+        denominator = 1+coef./cl(1:P.bnd_sep_neg).*exp(-eta/RTF2);
+        
+        css = x(P.idx_css:P.nx:P.nx*P.nj, k);
+        
+        i0 = P.F*rka*sqrt(csmax-css(1:P.bnd_sep_neg)).*sqrt(css(1:P.bnd_sep_neg)).*sqrt(cl(1:P.bnd_sep_neg));
+        
+        jn = i0/P.F.*(exp(eta/RTF2) - exp(-eta/RTF2))./denominator;
+        area = 3*P.epss_neg/P.Rp_neg;
+        g = x(P.nj*P.nx+1,k) - area*P.F*P.L_neg/P.n_neg*trapz(jn);
+        
+        yy = x(P.idx_jn:P.nx:P.nx*P.nj, k);
+        isequal(yy(1:P.bnd_sep_neg),jn)
 %     figure(10)
 % %     il = x(P.idx_il:P.nx:P.nx*P.nj, k);
 % %     dxn = P.L_neg/P.n_neg;

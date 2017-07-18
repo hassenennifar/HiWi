@@ -1,0 +1,31 @@
+L_neg 50e-6[m] Thickness of graphite electrode
+L_sep 20e-6[m] Thickness of separator
+L_pos_NMC 45e-6[m] Thickness of positive electrode (NMC)
+L_pos_LFP 85e-6[m] Thickness of positive electrode (LFP)
+T 298[K] Temperature
+Ds_neg 3e-14[m^2/s] Solid phase Li-diffusivity graphite
+Ds_pos_NMC 1e-15[m^2/s] Solid phase Li-diffusivity NMC
+Ds_pos_LFP 1e-18[m^2/s] Solid phase Li-diffusivity LFP
+rp_neg 10e-6[m] Particle radius graphite
+rp_pos_NMC 5e-6[m] Particle radius NMC
+rp_pos_LFP 30e-9[m] Particle radius LFP
+epss_pos 0.55 Solid phase vol-fraction positive electrode
+epsl_pos 0.35 Electrolyte phase vol-fraction positive electrode
+epss_neg 0.6 Solid phase vol-fraction negative electrode
+epsl_neg 0.35 Electrolyte phase vol-fraction negative electrode
+epsl_sep 0.5 Porosity separator
+cl_0 1000[mol/m^3] Initial electrolyte salt concentration
+csmax_neg 28000[mol/m^3] Max solid phase concentration negative electrode
+csmax_pos_NMC 50000[mol/m^3] Max solid phase concentration NMC
+csmax_pos_LFP 22000[mol/m^3] Max solid phase concentration LFP
+cs0_neg 0.8*csmax_neg Initial concentration graphite
+cs0_pos_NMC 0.4*csmax_pos_NMC Initial concentration NMC
+cs0_pos_LFP 0.01*csmax_pos_LFP Initial concentration LFP
+sigma_neg 100[S/m] Solid phase conductivity graphite
+sigma_pos_NMC 1[S/m]
+sigma_pos_LFP 1[S/m]
+k_neg 2e-11[m/s] Reaction rate coefficient negative electrode
+k_pos 2e-11[m/s] Reaction rate coefficient positive electrode
+alpha_a 0.5 Reaction rate coefficient positive electrode
+alpha_c 0.5 Reaction rate coefficient positive electrode
+t_plus 0.38 Transport number electrolyte

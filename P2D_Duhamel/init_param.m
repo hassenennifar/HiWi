@@ -17,7 +17,7 @@ P.lim = 1000;  % limit on number of iterations
 P.tolrel = 1e-4; % relative tolerance
 P.tolabs = 1e-10; % abolute tolerance
 
-P.n_neg = 3; % number of nodes in negative electrode
+P.n_neg = 5; % number of nodes in negative electrode
 P.n_sep = 2; % number of nodes in separator
 P.n_pos = 5; % number of nodes in positive electrode
 P.nj = P.n_neg+P.n_sep+P.n_pos+1; % total number of nodes

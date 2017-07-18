@@ -11,12 +11,12 @@ while 1
     [g, J] = approxBattery(k,P,x,x(end-1),ts,T);
 
     deltax = J\g;
-
     xknew = x(:,k) + deltax;
     xknew = shoeHorns(xknew,x(:,k),1,P);
 
 
     x(:,k) = xknew;
+    
 
     i = 30;
     if P.n_neg <= i
@@ -29,8 +29,6 @@ while 1
         | (abs(deltax(P.nx*i+1:P.nx*(i+1)))< max(errlim, P.tolrel*abs(x(P.nx*i+1:P.nx*(i+1),k))))) == P.nx %&& abs(g(P.nj*P.nx+1))<1e-10
         break;
     elseif max(abs(deltax)) < P.tolabs
-        break;
-    elseif iter > 10
         break;
     elseif iter > P.lim
         error('Solver could not converge: maximum iteration number reached');

@@ -51,7 +51,7 @@ denominator = 1+coef/cl(j,k)*exp(-eta/RTF2);
 
 % derivative of jn wrt css
 if P.dt == 0
-    if j == 1;
+    if j == 1
         a = [];
     end
     if j == P.nj
@@ -87,34 +87,79 @@ else
     djn = -Rp/P.dt*a1;
 end
 
-% zero equation
-g = -jn(j,k) + (i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2)))/denominator ...
-    - jn(j,k) - Rp*(sumpa + a1*(css(j,k)-css(j,k-1))/P.dt);
-    
-if j == 1;
-    a = [];
-end
-if j == P.nj
-    d = [];
-end
+% if j == P.bnd_sep_neg && isequal(P.mode, 'CV')
+%     g = jn(j,k) - i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator; g=-g;
+%     
+%     b(P.idx_cl) = - 1/P.F*di0_dcl*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator ...
+%         - i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator^2 ...
+%         *(coef/cl(j,k)^2*exp(-eta/RTF2));
+% 
+%     b(P.idx_phil) = i0/P.F/RTF2*(exp(eta/RTF2) + exp(-eta/RTF2))/denominator ...
+%         - i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator^2 ...
+%         *(-coef/cl(j,k)/RTF2*exp(-eta/RTF2));
+% 
+%     b(P.idx_css) = -(-1/P.F*di0_dcss*(exp(eta/RTF2) - exp(-eta/RTF2)) ...
+%         + i0/P.F/RTF2*dEeq*(exp(eta/RTF2) + exp(-eta/RTF2)))/denominator;
+% 
+%     b(P.idx_jn) = 1 + i0/P.F/RTF2*P.F*Rf*(exp(eta/RTF2) + exp(-eta/RTF2))/denominator^2;
+% 
+%     b(P.idx_phis) = -i0/P.F/RTF2*(exp(eta/RTF2) + exp(-eta/RTF2))/denominator ...
+%         + i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator^2 ...
+%         *(-coef/cl(j,k)/RTF2*exp(-eta/RTF2));
+% else
+plating_idx = find(css(1:P.bnd_sep_neg,k)/P.csmax_neg > 0.8);
+if ismember(j,plating_idx) && isequal(P.mode, 'CV')
+    g = jn(j,k) - i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator; g=-g;
 
-% jacobian row for BVK equation
-b(P.idx_cl) = -1/P.F*di0_dcl*(exp(eta/RTF2)-exp(-eta/RTF2))/denominator ...
-    - i0/P.F*(exp(eta/RTF2)-exp(-eta/RTF2))/denominator^2 ...
+    b(P.idx_cl) = - 1/P.F*di0_dcl*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator ...
+        - i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator^2 ...
         *(coef/cl(j,k)^2*exp(-eta/RTF2));
 
-b(P.idx_phil) = i0/P.F/RTF2*(exp(eta/RTF2)+exp(-eta/RTF2))/denominator ...
+    b(P.idx_phil) = i0/P.F/RTF2*(exp(eta/RTF2) + exp(-eta/RTF2))/denominator ...
         - i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator^2 ...
         *(-coef/cl(j,k)/RTF2*exp(-eta/RTF2));
 
-b(P.idx_css) = djn +(- 1/P.F*di0_dcss*(exp(eta/RTF2)-exp(-eta/RTF2)) ...
-    + i0/P.F/RTF2*(dEeq+P.F*Rf*djn)*(exp(eta/RTF2)+exp(-eta/RTF2)))/denominator;
+%     b(P.idx_css) = -(-1/P.F*di0_dcss*(exp(eta/RTF2) - exp(-eta/RTF2)) ...
+%         + i0/P.F/RTF2*dEeq*(exp(eta/RTF2) + exp(-eta/RTF2)))/denominator;
 
-b(P.idx_jn) = -1 - 0*i0/P.F/RTF2*P.F*Rf*(exp(eta/RTF2)+exp(-eta/RTF2)) +1;
+    b(P.idx_jn) = 1 + i0/P.F/RTF2*P.F*Rf*(exp(eta/RTF2) + exp(-eta/RTF2))/denominator^2;
 
-b(P.idx_phis) = -i0/P.F/RTF2*(exp(eta/RTF2)+exp(-eta/RTF2))/denominator ...
+    b(P.idx_phis) = -i0/P.F/RTF2*(exp(eta/RTF2) + exp(-eta/RTF2))/denominator ...
         + i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator^2 ...
         *(-coef/cl(j,k)/RTF2*exp(-eta/RTF2));
+else
+    % zero equation
+    g = -jn(j,k) + (i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2)))/denominator ...
+        - jn(j,k) - Rp*(sumpa + a1*(css(j,k)-css(j,k-1))/P.dt);
+
+
+    if j == 1
+        a = [];
+    end
+    if j == P.nj
+        d = [];
+    end
+
+    % jacobian row for BVK equation
+    b(P.idx_cl) = -1/P.F*di0_dcl*(exp(eta/RTF2)-exp(-eta/RTF2))/denominator ...
+        - i0/P.F*(exp(eta/RTF2)-exp(-eta/RTF2))/denominator^2 ...
+            *(coef/cl(j,k)^2*exp(-eta/RTF2));
+
+    b(P.idx_phil) = i0/P.F/RTF2*(exp(eta/RTF2)+exp(-eta/RTF2))/denominator ...
+            - i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator^2 ...
+            *(-coef/cl(j,k)/RTF2*exp(-eta/RTF2));
+
+
+    b(P.idx_css) = djn +(- 1/P.F*di0_dcss*(exp(eta/RTF2)-exp(-eta/RTF2)) ...
+        + i0/P.F/RTF2*(dEeq+P.F*Rf*djn)*(exp(eta/RTF2)+exp(-eta/RTF2)))/denominator;
+
+
+    b(P.idx_jn) = -1 - 0*i0/P.F/RTF2*P.F*Rf*(exp(eta/RTF2)+exp(-eta/RTF2)) +1;
+
+    b(P.idx_phis) = -i0/P.F/RTF2*(exp(eta/RTF2)+exp(-eta/RTF2))/denominator ...
+            + i0/P.F*(exp(eta/RTF2) - exp(-eta/RTF2))/denominator^2 ...
+            *(-coef/cl(j,k)/RTF2*exp(-eta/RTF2));
+end
 
 % concatenation of the the row vectors for the band jacobian matrix
 Jrow = [a b d];

@@ -40,8 +40,10 @@ end
 a1 = P.a1(j);
 sumpa = P.sumpa(j);
 
-if j == P.bnd_sep_neg && isequal(P.mode, 'CV')
-    g = -css(j,k)+0.8*P.csmax_neg;
+plating_idx = find(css(1:P.bnd_sep_neg,k)/P.csmax_neg > 0.8);
+if ismember(j,plating_idx) && isequal(P.mode, 'CV')
+    
+    g = -css(j,k)+css(j,k-1);
     
     b(P.idx_css) = 1;
 else
