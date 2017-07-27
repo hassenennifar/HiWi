@@ -98,6 +98,6 @@ end
 
 % bulk temperature model (2.17)
 
-f(ind.T) = 0;%((-phis(end)*p.i(t)+q)/p.l-p.hA*(T-p.Tamb))/p.cap;
+f(ind.T) = ((-phis(end)*p.i(t)+q)/p.l-p.hA*(T-p.Tamb))/p.cap;
 
 end

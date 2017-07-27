@@ -1,26 +1,14 @@
 function [g, Jrow] = eqn_appliedCur(k,P,x)
 
-% jn = x(P.idx_jn:P.nx:P.nx*P.nj, :);
-% hx = P.L_neg/P.n_neg;
-% area = 3*P.epss_neg/P.Rp_neg;
-
 Jrow = zeros(1,P.nx*P.nj+2);
 if isequal(P.mode, 'CV')
-%     g = x(end-1,k) - area*P.F*hx*sum(jn(1:P.bnd_sep_neg-1,k)+jn(2:P.bnd_sep_neg,k))/2;
-%     if x(P.nj*P.nx+1,k)==x(P.nj*P.nx+1,k-1)
-        curold = 0;
-        vold = x(P.nj*P.nx+2,1);
-%     else
-%         curold = x(P.nj*P.nx+1,k-1);
-%         vold = x(P.nj*P.nx+2,k-1);
-%     end
+
+    curold = 0;
+    vold = x(P.nj*P.nx+2,1);
     Rint = -(4.1-vold)/(x(P.nj*P.nx+1,k)-curold)+P.RG;
     OCP = x(P.nj*P.nx+2,k) + Rint*x(P.nj*P.nx+1,k);
     g = x(P.nj*P.nx+1,k) - (OCP-4.1)/Rint;
 
-%     Jrow(P.idx_jn) = 1/2;
-%     Jrow(P.idx_jn+P.nx:P.nx:P.nx*(P.bnd_sep_neg-1)) = 1;
-%     Jrow(P.nx*P.bnd_sep_neg) = 1/2;
     Jrow(P.nj*P.nx+2) = 1/Rint;
     Jrow(P.nj*P.nx+1) = -1 + (Rint-P.RG)/Rint;
     

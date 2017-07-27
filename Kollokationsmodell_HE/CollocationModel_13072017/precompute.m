@@ -22,13 +22,13 @@ indices.rightElectrode = [n(1) NaN n(1)+n(3)];
 
 % specify components of state vector
 
-indices.cl   =  1:N;                                % length: N
-indices.ir   =  N+1:N+Nel;                          % length: Nel
-indices.il   = N+Nel+1:N+2*Nel;                     % length: Nel
-indices.phis   = N+2*Nel+1:N+3*Nel;                 % length: Nel
-indices.phil   = N+3*Nel+1:2*N+3*Nel;               % length: N
-indices.cs   = 2*N+3*Nel+1:2*N+(3+m)*Nel;           % length: m*Nel;
-indices.T = 2*N+(3+m)*Nel+1;                        % length: 1
+indices.cl   = 1:N;                                % length: N
+indices.cs   = N+1:N+m*Nel;                         % length: m*Nel;
+indices.ir   = N+m*Nel+1:N+(1+m)*Nel;                 % length: Nel
+indices.il   = N+(1+m)*Nel+1:N+(2+m)*Nel;           % length: Nel
+indices.phis = N+(2+m)*Nel+1:N+(3+m)*Nel;           % length: Nel
+indices.phil = N+(3+m)*Nel+1:2*N+(3+m)*Nel;         % length: N
+indices.T    = 2*N+(3+m)*Nel+1;                     % length: 1
 
 d = indices.T;                                %length of state vector
 precomp.indices = indices; precomp.d = d;   %store result
@@ -41,7 +41,7 @@ Mir = zeros(Nel,1); Mil = zeros(Nel,1); Mphis = zeros(Nel,1);
 Mphil = zeros(N,1);
 Mcs = repmat([ones(m-1,1); 0],Nel,1);
 MT = 1;
-precomp.M = spdiags([Mcl; Mir; Mil; Mphis; Mphil; Mcs; MT],0,d,d);
+precomp.M = spdiags([Mcl; Mcs; Mir; Mil; Mphis; Mphil; MT],0,d,d);
 
 % compute Chebychev differentiation matrices and Clenshaw-Curtis weights
 % for x discretization in the three domains

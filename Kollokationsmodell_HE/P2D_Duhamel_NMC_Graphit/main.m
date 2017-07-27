@@ -61,7 +61,7 @@ while 1%v(k) > vcut
     elseif ts(k) < 1
         P.dt = 0.025;
     else
-        P.dt = 10;
+        P.dt = 2;
     end
 
 end
